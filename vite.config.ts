@@ -29,7 +29,7 @@ export default defineConfig(({ command, mode }) => {
     },
     
     // Base URL for GitHub Pages deployment
-    base: process.env.GITHUB_ACTIONS ? '/react-developer-assignment/' : '/',
+    base: process.env.GITHUB_ACTIONS ? '/project-1/' : '/',
     
     // Path resolution
     resolve: {

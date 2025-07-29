@@ -107,9 +107,6 @@ jobs:
       env:
         NODE_ENV: production
         
-    - name: ⚙️ Setup Pages
-      uses: actions/configure-pages@v4
-      
     - name: 📤 Upload to Pages
       uses: actions/upload-pages-artifact@v3
       with:
