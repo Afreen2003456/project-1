@@ -225,6 +225,18 @@ const defaultPortfolioData: PortfolioData = {
 
 export const PortfolioProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [portfolioData, setPortfolioData] = useState<PortfolioData>(defaultPortfolioData)
+  const [portfolios, setPortfolios] = useState<PortfolioData[]>([])
+  const [searchTerm, setSearchTerm] = useState('')
+  const [skillFilter, setSkillFilter] = useState('all')
+
+  // Filtered portfolios based on search and skill filter
+  const filteredPortfolios = portfolios.filter(portfolio => {
+    const matchesSearch = portfolio.personalInfo.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         portfolio.personalInfo.bio.toLowerCase().includes(searchTerm.toLowerCase())
+    const matchesSkill = skillFilter === 'all' || 
+                        portfolio.skills.some(skill => skill.name.toLowerCase().includes(skillFilter.toLowerCase()))
+    return matchesSearch && matchesSkill
+  })
 
   const updatePersonalInfo = (info: Partial<PersonalInfo>) => {
     setPortfolioData(prev => ({
@@ -324,9 +336,27 @@ export const PortfolioProvider: React.FC<{ children: ReactNode }> = ({ children 
     }))
   }
 
+  const addPortfolio = (portfolio: Omit<PortfolioData, 'id'>) => {
+    const newPortfolio = {
+      ...portfolio,
+      id: Date.now().toString()
+    }
+    setPortfolios(prev => [...prev, newPortfolio])
+  }
+
+  const getPortfolio = (id: string): PortfolioData | undefined => {
+    return portfolios.find(portfolio => portfolio.id === id)
+  }
+
   return (
     <PortfolioContext.Provider value={{
       portfolioData,
+      portfolios,
+      filteredPortfolios,
+      searchTerm,
+      setSearchTerm,
+      skillFilter,
+      setSkillFilter,
       updatePersonalInfo,
       addSkill,
       updateSkill,
@@ -340,7 +370,9 @@ export const PortfolioProvider: React.FC<{ children: ReactNode }> = ({ children 
       addEducation,
       updateEducation,
       removeEducation,
-      setSelectedTemplate
+      setSelectedTemplate,
+      addPortfolio,
+      getPortfolio
     }}>
       {children}
     </PortfolioContext.Provider>
