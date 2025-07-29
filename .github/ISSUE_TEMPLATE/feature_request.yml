@@ -1,0 +1,208 @@
+name: ✨ Feature Request
+description: Suggest a new feature or enhancement for the React Developer Assignment
+title: "✨ [Feature]: "
+labels: ["enhancement", "needs-discussion"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## ✨ Feature Request
+        
+        Thank you for suggesting a new feature! Please fill out this form to help us understand your idea.
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: 📋 Pre-submission Checklist
+      description: Please verify these items before submitting
+      options:
+        - label: I have searched existing issues to avoid duplicates
+          required: true
+        - label: This feature aligns with the project goals
+          required: true
+        - label: I have provided detailed use cases
+          required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: 🎯 Feature Category
+      description: What type of feature is this?
+      options:
+        - Property Listing Enhancement
+        - Portfolio Generator Improvement
+        - New Template Design
+        - UI/UX Enhancement
+        - Performance Optimization
+        - Accessibility Improvement
+        - Mobile/Responsive Feature
+        - Search/Filter Enhancement
+        - Export/Share Feature
+        - Integration (APIs, etc.)
+        - Developer Experience
+        - Documentation
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: 📊 Priority Level
+      description: How important is this feature?
+      options:
+        - 🔴 Critical - Essential for core functionality
+        - 🟠 High - Important for user experience
+        - 🟡 Medium - Nice to have enhancement
+        - 🟢 Low - Minor improvement or convenience
+    validations:
+      required: true
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: 📝 Feature Summary
+      description: A brief, clear summary of the feature you're requesting
+      placeholder: In one or two sentences, describe what you want to add...
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: 🎯 Problem Statement
+      description: What problem does this feature solve?
+      placeholder: |
+        Describe the current limitation or pain point:
+        - What can't users do right now?
+        - What workflow is inefficient?
+        - What would improve the user experience?
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: 💡 Proposed Solution
+      description: Describe your proposed solution in detail
+      placeholder: |
+        Explain how you envision this feature working:
+        - What would the user interface look like?
+        - How would users interact with it?
+        - What would be the step-by-step flow?
+    validations:
+      required: true
+
+  - type: textarea
+    id: use-cases
+    attributes:
+      label: 🎪 Use Cases
+      description: Provide specific examples of how this feature would be used
+      placeholder: |
+        Example scenarios:
+        1. As a [user type], I want to [do something] so that [benefit]
+        2. When [situation], users need to [action] in order to [goal]
+        3. Currently, users have to [current process], but with this feature they could [new process]
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 🔄 Alternative Solutions
+      description: Describe any alternative solutions or workarounds you've considered
+      placeholder: |
+        - Alternative approach #1: [describe]
+        - Alternative approach #2: [describe]
+        - Current workaround: [describe]
+
+  - type: textarea
+    id: mockups
+    attributes:
+      label: 🎨 Design Ideas/Mockups
+      description: Any visual ideas, mockups, or examples from other applications?
+      placeholder: |
+        - Attach mockups, wireframes, or screenshots
+        - Link to similar features in other apps
+        - Describe the visual design you have in mind
+
+  - type: dropdown
+    id: complexity
+    attributes:
+      label: 🔧 Implementation Complexity
+      description: How complex do you think this feature would be to implement?
+      options:
+        - 🟢 Simple - Minor UI change or small feature
+        - 🟡 Medium - Moderate development effort
+        - 🟠 Complex - Significant development work
+        - 🔴 Very Complex - Major architectural changes
+        - ❓ Not Sure
+
+  - type: checkboxes
+    id: components
+    attributes:
+      label: 🎯 Affected Components
+      description: Which parts of the application would this feature affect?
+      options:
+        - label: Property Listing Dashboard
+        - label: Portfolio Generator
+        - label: Template System
+        - label: Portfolio Builder Form
+        - label: Portfolio Preview
+        - label: Navigation/Routing
+        - label: Search/Filtering
+        - label: Data Management
+        - label: UI Components
+        - label: Mobile/Responsive Layout
+        - label: Performance
+        - label: Accessibility
+
+  - type: textarea
+    id: technical-notes
+    attributes:
+      label: 🔧 Technical Considerations
+      description: Any technical details, requirements, or constraints to consider?
+      placeholder: |
+        - API requirements
+        - Browser compatibility needs
+        - Performance considerations
+        - Security implications
+        - Third-party integrations needed
+
+  - type: textarea
+    id: success-criteria
+    attributes:
+      label: ✅ Success Criteria
+      description: How would we know this feature is successful?
+      placeholder: |
+        This feature would be successful if:
+        - Users can [specific action]
+        - The workflow is [improvement]
+        - Performance metrics show [measurable improvement]
+        - User feedback indicates [positive outcome]
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: 🤝 Contribution
+      description: Would you like to contribute to implementing this feature?
+      options:
+        - label: I would like to work on implementing this feature
+        - label: I can help with design/mockups
+        - label: I can provide testing and feedback
+        - label: I can help with documentation
+        - label: I can provide domain expertise
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: 💡 Additional Context
+      description: Any other information that would be helpful?
+      placeholder: |
+        - Links to relevant resources
+        - Examples from other applications
+        - User research or feedback
+        - Business requirements
+        - Timeline considerations 

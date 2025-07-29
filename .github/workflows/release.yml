@@ -1,0 +1,166 @@
+name: 🏷️ Release & Changelog
+
+on:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - 'README.md'
+      - 'docs/**'
+      - '.github/**'
+
+jobs:
+  # 🏷️ Create Release
+  release:
+    name: 🏷️ Create Release
+    runs-on: ubuntu-latest
+    if: ${{ !contains(github.event.head_commit.message, 'skip-release') }}
+    
+    outputs:
+      released: ${{ steps.release.outputs.released }}
+      version: ${{ steps.release.outputs.version }}
+      tag: ${{ steps.release.outputs.tag }}
+    
+    steps:
+    - name: 📥 Checkout Repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        token: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: 🟢 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+        
+    - name: 📦 Install Dependencies
+      run: npm ci
+      
+    - name: 🏗️ Build Project
+      run: npm run build
+      
+    - name: 🏷️ Create Release
+      id: release
+      uses: google-github-actions/release-please-action@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        release-type: node
+        package-name: react-developer-assignment
+        changelog-types: |
+          [
+            {"type": "feat", "section": "✨ Features", "hidden": false},
+            {"type": "fix", "section": "🐛 Bug Fixes", "hidden": false},
+            {"type": "perf", "section": "⚡ Performance", "hidden": false},
+            {"type": "refactor", "section": "♻️ Refactoring", "hidden": false},
+            {"type": "docs", "section": "📚 Documentation", "hidden": false},
+            {"type": "style", "section": "💄 Styling", "hidden": false},
+            {"type": "chore", "section": "🔧 Maintenance", "hidden": false}
+          ]
+
+  # 📊 Generate Project Stats
+  project-stats:
+    name: 📊 Generate Project Stats
+    runs-on: ubuntu-latest
+    needs: [release]
+    if: needs.release.outputs.released == 'true'
+    
+    steps:
+    - name: 📥 Checkout Repository
+      uses: actions/checkout@v4
+      
+    - name: 🟢 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+        
+    - name: 📦 Install Dependencies
+      run: npm ci
+      
+    - name: 📊 Generate Code Statistics
+      run: |
+        echo "# 📊 Project Statistics - v${{ needs.release.outputs.version }}" > STATS.md
+        echo "" >> STATS.md
+        echo "## 📁 File Structure" >> STATS.md
+        echo "\`\`\`" >> STATS.md
+        find src -type f -name "*.ts" -o -name "*.tsx" -o -name "*.js" -o -name "*.jsx" | head -20 >> STATS.md
+        echo "\`\`\`" >> STATS.md
+        echo "" >> STATS.md
+        echo "## 📏 Code Metrics" >> STATS.md
+        echo "- **Total Files:** $(find src -type f \( -name "*.ts" -o -name "*.tsx" -o -name "*.js" -o -name "*.jsx" \) | wc -l)" >> STATS.md
+        echo "- **Lines of Code:** $(find src -name "*.ts" -o -name "*.tsx" -o -name "*.js" -o -name "*.jsx" | xargs wc -l | tail -1 | awk '{print $1}')" >> STATS.md
+        echo "- **Components:** $(find src/components -name "*.tsx" | wc -l)" >> STATS.md
+        echo "- **Pages:** $(find src/pages -name "*.tsx" | wc -l)" >> STATS.md
+        echo "- **Contexts:** $(find src/contexts -name "*.tsx" | wc -l)" >> STATS.md
+        echo "" >> STATS.md
+        echo "## 🎯 Features Implemented" >> STATS.md
+        echo "- ✅ **Property Listing Dashboard**" >> STATS.md
+        echo "  - Advanced search and filtering" >> STATS.md
+        echo "  - Property cards with detailed information" >> STATS.md
+        echo "  - Add new properties form" >> STATS.md
+        echo "  - Property details modal with Google Maps integration" >> STATS.md
+        echo "  - Dark mode support" >> STATS.md
+        echo "  - Indian currency formatting (₹ Lakh/Crore)" >> STATS.md
+        echo "" >> STATS.md
+        echo "- ✅ **Portfolio Generator**" >> STATS.md
+        echo "  - Multiple professional templates" >> STATS.md
+        echo "  - Interactive portfolio builder" >> STATS.md
+        echo "  - Real-time preview" >> STATS.md
+        echo "  - Skills, projects, and experience sections" >> STATS.md
+        echo "  - Export and print functionality" >> STATS.md
+        echo "  - Responsive design" >> STATS.md
+        echo "" >> STATS.md
+        echo "## 🎨 UI/UX Enhancements" >> STATS.md
+        echo "- Glass morphism effects" >> STATS.md
+        echo "- Gradient animations" >> STATS.md
+        echo "- Floating elements and micro-animations" >> STATS.md
+        echo "- Enhanced hover effects" >> STATS.md
+        echo "- Custom scrollbar design" >> STATS.md
+        echo "- Smooth theme transitions" >> STATS.md
+        echo "" >> STATS.md
+        echo "## 🚀 Technology Stack" >> STATS.md
+        echo "- **React 18** - Modern hooks & context" >> STATS.md
+        echo "- **TypeScript** - Type-safe development" >> STATS.md
+        echo "- **Vite** - Lightning fast builds" >> STATS.md
+        echo "- **Modern CSS** - Glass morphism & animations" >> STATS.md
+        echo "" >> STATS.md
+        echo "---" >> STATS.md
+        echo "*Generated on $(date) for release v${{ needs.release.outputs.version }}*" >> STATS.md
+        
+    - name: 📤 Upload Stats as Release Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ needs.release.outputs.upload_url }}
+        asset_path: ./STATS.md
+        asset_name: project-stats-v${{ needs.release.outputs.version }}.md
+        asset_content_type: text/markdown
+
+  # 🎉 Notify Success
+  notify:
+    name: 🎉 Notify Release Success
+    runs-on: ubuntu-latest
+    needs: [release, project-stats]
+    if: needs.release.outputs.released == 'true'
+    
+    steps:
+    - name: 🎉 Send Success Notification
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const version = '${{ needs.release.outputs.version }}';
+          const tag = '${{ needs.release.outputs.tag }}';
+          
+          console.log(`🎉 Successfully released React Developer Assignment v${version}!`);
+          console.log(`🏷️ Tag: ${tag}`);
+          console.log(`🌐 Live Demo: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/`);
+          console.log(`📋 Release Notes: https://github.com/${{ github.repository }}/releases/tag/${tag}`);
+          
+          // You can add webhook notifications here for Slack, Discord, etc.
+          core.summary.addHeading('🎉 Release Successful!');
+          core.summary.addTable([
+            [{data: 'Version', header: true}, {data: 'URL', header: true}, {data: 'Status', header: true}],
+            [version, `https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/`, '✅ Live']
+          ]);
+          core.summary.write(); 

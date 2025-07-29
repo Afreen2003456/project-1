@@ -1,0 +1,101 @@
+{
+  "name": "react-developer-assignment",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Complete React + TypeScript application showcasing Property Listing Dashboard and Portfolio Generator with modern UI/UX",
+  "keywords": [
+    "react",
+    "typescript",
+    "vite",
+    "portfolio-generator",
+    "property-listing",
+    "ui-ux",
+    "glass-morphism",
+    "dark-mode"
+  ],
+  "author": "React Developer",
+  "license": "MIT",
+  "homepage": "https://haaris519.github.io/react-developer-assignment/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/haaris519/react-developer-assignment.git"
+  },
+  "bugs": {
+    "url": "https://github.com/haaris519/react-developer-assignment/issues"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint:fix": "eslint . --ext ts,tsx --fix",
+    "preview": "vite preview",
+    "type-check": "tsc --noEmit",
+    "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,css,md}\" \"*.{json,md}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,js,jsx,css,md}\" \"*.{json,md}\"",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage",
+    "test:run": "vitest run",
+    "analyze": "npm run build && npx vite-bundle-analyzer dist/stats.html",
+    "size": "npm run build && size-limit",
+    "clean": "rm -rf dist node_modules/.vite",
+    "prepare": "husky install || true",
+    "postinstall": "echo 'Installation completed'",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist",
+    "build:gh-pages": "GITHUB_ACTIONS=true npm run build"
+  },
+  "dependencies": {
+    "lucide-react": "^0.533.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.20.1"
+  },
+  "devDependencies": {
+    "@size-limit/preset-small-lib": "^11.0.1",
+    "@types/react": "^18.2.43",
+    "@types/react-dom": "^18.2.17",
+    "@typescript-eslint/eslint-plugin": "^6.14.0",
+    "@typescript-eslint/parser": "^6.14.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "@vitest/coverage-v8": "^1.0.4",
+    "@vitest/ui": "^1.0.4",
+    "autoprefixer": "^10.4.21",
+    "eslint": "^8.55.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.5",
+    "gh-pages": "^6.3.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.0",
+    "postcss": "^8.5.6",
+    "prettier": "^3.1.1",
+    "size-limit": "^11.0.1",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.2.2",
+    "vite": "^5.0.8",
+    "vitest": "^1.0.4"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{css,md,json}": [
+      "prettier --write"
+    ]
+  },
+  "size-limit": [
+    {
+      "path": "dist/**/*.js",
+      "limit": "500 KB"
+    },
+    {
+      "path": "dist/**/*.css",
+      "limit": "50 KB"
+    }
+  ],
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}
